@@ -42,6 +42,28 @@ submit(postData, email) {
         .catch(error => console.log(error));
 }
 
+// getpdf() {
+//     const postData = {
+//         "currency": 0,  
+//         "hash_string": 
+//             "7e8ab922fd332ee183af0d7ad79d9e6ea4a5a6ebef012e618518e330d9ee3180",
+//             "proof_type": 1
+//         }
+//     const apiKey = this.state.ACCESS_KEY;
+//     var headers = {
+//         'Content-Type': 'application/json',
+//         'AccessKey': apiKey
+//     }
+//     axios({
+//         url: "http://api.mavenstamp.com/v1/timestamp/proof",
+//         method: 'post',
+//         data: postData,
+//         headers: headers
+//     })
+//         .then(response => console.log(response))
+//         .catch(error => console.log(error));
+// }
+
 componentDidMount() {
     const hashArray = createHashCount(this.state.MAX_COUNT)//TODO move to parent if re-rendering
     this.setState({ hashArray: hashArray });

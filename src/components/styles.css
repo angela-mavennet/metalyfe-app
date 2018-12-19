@@ -6,7 +6,7 @@
   @import '../../node_modules/antd/dist/antd.css';
 
   .card-container > .ant-tabs-card > .ant-tabs-content {
-    height: 120px;
+    height: inherit;
     margin-top: -16px;
   }
   

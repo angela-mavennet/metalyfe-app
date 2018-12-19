@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import WrappedTimestampForm from './components/TimestampForm';
 import Uploader from './components/Uploader';
+import Confirmation from './components/Confirmation';
+import axios from 'axios';
 /**
  * start browser with command 
- *  chromium-browser --disable-web-security --userata-dir=""
+ *  chromium-browser --disable-web-security --user-data-dir=""
 
  */
 import { Steps, Button, message } from 'antd';
@@ -24,7 +26,7 @@ class App extends React.Component {
   }
 
   handleCommentChange(comment) {
-    this.setState({comment: comment});
+    this.setState({ comment: comment });
     console.log("comment changed to", comment)
   }
 
@@ -40,28 +42,34 @@ class App extends React.Component {
 
 
 
+  componentDidMount() {
+  
+  }
+
+
+
   render() {
     const { current } = this.state;
     const Step = Steps.Step;
     const steps = [{
-      title: 'First',
-      content: <Uploader 
-                updateHash={this.updateHash.bind(this)} 
-                hash={this.state.hash}
-                handleCommentChange={this.handleCommentChange.bind(this)}
-                ></Uploader>,
+      title: 'Upload',
+      content: <Uploader
+        updateHash={this.updateHash.bind(this)}
+        hash={this.state.hash}
+        handleCommentChange={this.handleCommentChange.bind(this)}
+      ></Uploader>,
     }, {
-      title: 'Second',
+      title: 'Submit',
       content: <WrappedTimestampForm hash={this.state.hash}></WrappedTimestampForm>,
     }, {
-      title: 'Last',
-      content: 'Last-content',
+      title: 'Done',
+      content: <Confirmation hash={this.state.hash}></Confirmation>,
     }];
 
     return (
       <div class={"body"}>
-      <h1>Try Mavenstamp</h1>
-      <p>some info</p>
+        <h1>Try Mavenstamp</h1>
+        <p>some info</p>
         <Steps current={current}>
           {steps.map(item => <Step key={item.title} title={item.title} />)}
         </Steps>
@@ -78,8 +86,8 @@ class App extends React.Component {
           {
             current > 0
             && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              Previous
+              <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+                Previous
             </Button>
             )
           }
