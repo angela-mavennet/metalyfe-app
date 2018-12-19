@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import DropzoneStyled from 'react-dropzone-styled'
+import Dropzone from 'react-dropzone'
 import SHA256 from "crypto-js/sha256";
 
 
@@ -29,7 +29,7 @@ class MyDropzone extends React.Component {
 
    render() {
     return (
-      <DropzoneStyled onDrop={this.onDrop}>
+      <Dropzone onDrop={this.onDrop}>
         {({getRootProps, getInputProps, isDragActive}) => {
           return (
             <div
@@ -45,7 +45,7 @@ class MyDropzone extends React.Component {
             </div>
           )
         }}
-      </DropzoneStyled>
+      </Dropzone>
     );
   }
 }
