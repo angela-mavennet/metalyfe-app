@@ -1,0 +1,42 @@
+{
+  "name": "browser-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.11.2",
+    "axios": "^0.18.0",
+    "crypto": "^1.0.1",
+    "crypto-js": "^3.1.9-1",
+    "ee-machine-id": "^1.0.1",
+    "filereader": "^0.10.3",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "lodash": "^4.17.11",
+    "machine-uuid": "^1.2.0",
+    "node-machine-id": "^1.1.10",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-dropzone": "^8.0.2",
+    "react-dropzone-styled": "^0.1.0",
+    "react-file-base64": "^1.0.3",
+    "react-scripts": "2.1.1",
+    "sha256": "^0.2.0",
+    "util": "^0.11.1",
+    "util.promisify": "^1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

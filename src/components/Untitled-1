@@ -1,0 +1,14 @@
+curl --location --request POST "http://api.mavenstamp.com/v1/timestamp/create" \
+  --header "Content-Type: application/json" \
+  --header "AccessKey: 1616b5bc-3061-47d5-b7f3-aa4f02e70541" \
+  --data "{
+	\"comment\": \"create with existing hash\",
+	\"notifications\": [
+    {
+      \"currency\": 0,
+      \"notification_type\": 0,
+      \"target\": \"angela@mavennet.com\"
+    }
+  ],
+  \"hash\": \"7E8AB922FD332EE183AF0D7AD79D9E6EA4A5A6EBEF012E618518E330D9EE3180\"
+}"

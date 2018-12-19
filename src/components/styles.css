@@ -1,0 +1,40 @@
+/* .uploader {
+    background-color: white;
+    color: black;
+  } */
+
+  @import '../../node_modules/antd/dist/antd.css';
+
+  .card-container > .ant-tabs-card > .ant-tabs-content {
+    height: 120px;
+    margin-top: -16px;
+  }
+  
+  .card-container > .ant-tabs-card > .ant-tabs-content > .ant-tabs-tabpane {
+    background: #fff;
+    padding: 16px;
+  }
+  
+  .card-container > .ant-tabs-card > .ant-tabs-bar {
+    border-color: #fff;
+  }
+  
+  .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+    border-color: transparent;
+    background: transparent;
+  }
+  
+  .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+    border-color: #fff;
+    background: #fff;
+  }
+  .uploader > .form {
+      display: flex;
+      flex-direction: row;
+
+  }
+
+  .dropzone {
+      width: 30rem;
+      height: 10rem;
+  }
