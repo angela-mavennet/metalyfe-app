@@ -106,11 +106,14 @@ render() {
     const {
         getFieldDecorator, getFieldsError
     } = this.props.form;
-
+    const formItemLayout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 8 },
+      };
     return (
         <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem
-         
+          {...formItemLayout}
           label="Notification"
         >
           {getFieldDecorator('notification', {
@@ -123,7 +126,7 @@ render() {
           )}
         </FormItem>
             {this.props.form.getFieldValue("notification")=="email" && <FormItem
-              
+             
                 label="E-mail"
             >
                 {getFieldDecorator('email', {

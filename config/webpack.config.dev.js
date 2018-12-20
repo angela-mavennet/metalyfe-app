@@ -33,7 +33,7 @@ const env = getClientEnvironment(publicUrl);
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // style files regexes
-const cssRegex = /\.(?:le|c)ss$/;
+const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
@@ -50,6 +50,7 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
       loader: require.resolve('less-loader'),
       options: {
         importLoaders: 1,
+        javascriptEnabled: true
       },
     },
     {
