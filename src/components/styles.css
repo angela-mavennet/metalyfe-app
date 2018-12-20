@@ -100,6 +100,7 @@
     color: white;
   
   }
+
   .ant-btn-primary:hover, .ant-btn-primary:focus {
     background: linear-gradient(124.91deg, #51277B 8.77%, #722575 79.89%, #8A2471 100%);
     border-color: #51277B;
@@ -111,6 +112,10 @@
   }
   .ant-input:focus {
     box-shadow: 0 0 0 2px rgba(105, 38, 119, 0.586702)
+  }
+
+  ::selection {
+    background: #722575;
   }
   /* .ant-radio-checked:after {
     border: 
