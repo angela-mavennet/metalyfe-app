@@ -9,6 +9,7 @@ import {
     Form, Icon, Input, Button, Checkbox, Radio
 } from 'antd';
 import { checkUserCount, createHashCount } from '../util';
+import StepButtons from './StepButtons';
 
 class TimestampForm extends Component {
     
@@ -17,12 +18,12 @@ class TimestampForm extends Component {
         this.state = {
             ACCESS_KEY: "1616b5bc-3061-47d5-b7f3-aa4f02e70541",
             MAX_COUNT: 5,
-            notification: "anonymous"
         };
     }
 
 submit(postData, email) {
-    // console.log("in submit method, postData", postData)
+    console.log("in submit")
+    this.props.next();
     if (!checkUserCount(email, this.state.hashArray, this.state.MAX_COUNT)) {
         alert("sorry you used up all your credits");
         return;
@@ -38,50 +39,33 @@ submit(postData, email) {
         data: postData,
         headers: headers
     })
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+    .then(response => {
+        console.log(response)
+        
+    })
+    .catch(error => console.log(error));
+        
 }
 
-// getpdf() {
-//     const postData = {
-//         "currency": 0,  
-//         "hash_string": 
-//             "7e8ab922fd332ee183af0d7ad79d9e6ea4a5a6ebef012e618518e330d9ee3180",
-//             "proof_type": 1
-//         }
-//     const apiKey = this.state.ACCESS_KEY;
-//     var headers = {
-//         'Content-Type': 'application/json',
-//         'AccessKey': apiKey
-//     }
-//     axios({
-//         url: "http://api.mavenstamp.com/v1/timestamp/proof",
-//         method: 'post',
-//         data: postData,
-//         headers: headers
-//     })
-//         .then(response => console.log(response))
-//         .catch(error => console.log(error));
-// }
 
 componentDidMount() {
     const hashArray = createHashCount(this.state.MAX_COUNT)//TODO move to parent if re-rendering
     this.setState({ hashArray: hashArray });
+    // console.log("form", this.props.form)
+    // console.log(this.props.form.getFieldValue("notification"))
+    this.props.form.setFieldsValue({
+        notification: "email",
+      });
 }
 
 handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-        if(!this.props.hash){
-         alert("enter a hash")//todo validate in step 1 anyway
-        }
+     
         if (!err) {
-            // console.log('Received values of form: ', values);
-         
-            //form postdata and submit
             console.log("notifications", values.email)
             const postData = {
-                "comment": "create with existing hash",
+                "comment": this.props.comment,
                 "notifications": [
                     {
                         "currency": 0,
@@ -99,9 +83,13 @@ handleSubmit = (e) => {
 
 onNotificationChange(e) {
         console.log('radio checked', e.target.value);
-        this.setState({
-          notification: e.target.value,
-        });  
+      
+        // handleSelectChange = (value) => {
+        //     console.log(value);
+            this.props.form.setFieldsValue({
+              notification: e.target.value,
+            });
+        //   }
 }
 
 
@@ -134,14 +122,16 @@ render() {
           {...formItemLayout}
           label="Notification"
         >
-          {getFieldDecorator('notification')(
-            <RadioGroup  onChange={this.onNotificationChange.bind(this)} value={this.state.notification}>
+          {getFieldDecorator('notification', {
+              rules: [{ required: true, message: 'Please select a notification option' }]
+          })(
+            <RadioGroup  onChange={this.onNotificationChange.bind(this)}>
+             <Radio value="email">Notify me by email</Radio>
               <Radio value="anonymous">Do not notify me/Anonymous</Radio>
-              <Radio value="email">Notify me by email</Radio>
             </RadioGroup>
           )}
         </FormItem>
-            {this.state.notification=="email" && <FormItem
+            {this.props.form.getFieldValue("notification")=="email" && <FormItem
                 {...formItemLayout}
                 label="E-mail"
             >
@@ -149,26 +139,31 @@ render() {
                     rules: [{
                         type: 'email', message: 'The input is not valid E-mail!',
                     }, {
-                        required: this.state.notification == "email", message: 'Please input your E-mail!',
+                        required: this.props.form.getFieldValue("notification") == "email", message: 'Please input your E-mail!',
                     }],
                 })(
                     <Input />
                 )}
             </FormItem>}
-            <FormItem
-            label="create certificate"
-            >   {getFieldDecorator('certificateURL', {})(
-                <Checkbox/>
-            )}
-            </FormItem>
+         
             <FormItem>
-                <Button
+                {/* <Button
                     type="primary"
                     htmlType="submit"
                     disabled={hasErrors(getFieldsError())}
                 >
                     Submit
-            </Button>
+            </Button> */}
+                <StepButtons
+                 current={this.props.current} // required
+                 stepsLength={this.props.stepsLength} // required
+                 next={this.props.next} // required
+                 prev={this.props.prev} // required
+                 nextText={"Submit"}
+                 htmlType={"submit"}
+                 disabled={hasErrors(getFieldsError())}
+                 ></StepButtons>
+
             </FormItem>
         </Form>
     );

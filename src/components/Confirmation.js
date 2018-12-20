@@ -3,6 +3,7 @@ import React from 'react'
 import config from '../config';
 import { Button } from 'antd';
 import axios from 'axios';
+import StepButtons from './StepButtons';
 
 
 class Confirmation extends React.Component {
@@ -57,6 +58,16 @@ getpdf() {
          icon="download" 
          onClick={this.getpdf.bind(this)}
          size={'large'}>Download</Button>
+
+<StepButtons
+                 current={this.props.current} // required
+                 stepsLength={this.props.stepsLength} // required
+                 next={this.props.next} // required
+                 prev={this.props.prev} // required
+                //  nextText={"Submit"}
+                //  htmlType={"submit"}
+                //  disabled={hasErrors(getFieldsError())}
+                 ></StepButtons>
      </div>
     );
   }

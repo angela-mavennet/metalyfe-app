@@ -10,18 +10,26 @@ class TextForm extends Component {
         this.state = {
         };
     }
+    type = "Text"
 
     componentDidMount() {
-        // To disabled submit button at the beginning.
-        // this.props.form.validateFields();
+    if(this.props.upload) {
+        if(this.props.upload.type == this.type) {
+            this.setState({
+                value: this.props.upload.data
+            })
+        }
+    }
+    console.log("this props form", this.props.form)
+    
     }
 
 handleSubmit = (e) => {
     e.preventDefault();
+    
     this.props.form.validateFields((err, values) => {
         if (!err) {
-            console.log('Received values of form: ', values);
-            this.props.handleUploadChange(values.text);
+            this.props.handleUploadChange(values.text, this.type);
         }
     })
 }
@@ -61,7 +69,7 @@ render() {
                     }],
                 })(
                     
-                    <TextArea rows={4}  />
+                    <TextArea rows={4} />
                 )}
             </FormItem>
             <FormItem>
@@ -71,7 +79,7 @@ render() {
                     disabled={hasErrors(getFieldsError())}
                 >
                     Done
-            </Button>
+                </Button>
             </FormItem>
         </Form>
     );

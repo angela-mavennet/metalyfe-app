@@ -7,24 +7,47 @@ import SHA256 from "crypto-js/sha256";
 
 
 
-class MyDropzone extends React.Component {
+class DragNDrop extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+}
+
+  type="File Upload"
+
+  componentDidMount() {
+    if(this.props.upload) {
+        if(this.props.upload.type == this.type) {
+            this.setState({
+                value: this.props.upload.data
+            })
+        }
+    }
     
+    }
 
    onDrop = acceptedFiles => {
     acceptedFiles.forEach(file => {
+      console.log("file", file)
         const reader = new FileReader();
         reader.onload = () => {
             const fileAsBinaryString = reader.result;
             // do whatever you want with the file content
             console.log("file read", reader.result)
-            this.props.handleUploadChange(reader.result);
+            this.props.handleUploadChange(reader.result, this.type);
+            //have to save file.name as well...file object...
         };
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
 
         reader.readAsBinaryString(file);
+        this.setState({fileName: file.name})
     });}
+
+  
+
 
 
    render() {
@@ -42,6 +65,9 @@ class MyDropzone extends React.Component {
                   <p>Drop files here...</p> :
                   <p>Try dropping some files here, or click to select files to upload.</p>
               }
+              {this.state.fileName && <div>
+                {this.state.fileName}
+              </div>}
             </div>
           )
         }}
@@ -49,4 +75,4 @@ class MyDropzone extends React.Component {
     );
   }
 }
-export default MyDropzone
+export default DragNDrop

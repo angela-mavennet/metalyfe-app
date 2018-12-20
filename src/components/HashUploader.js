@@ -10,15 +10,26 @@ class HashUploader extends Component {
         this.state = {
         };
     }
+    type = "Hash"
+    componentDidMount() {
+        if(this.props.upload) {
+            if(this.props.upload.type == this.type) {
+                this.setState({
+                    value: this.props.upload.data
+                })
+            }
+        }
+        
+        }
 
   handleChange(e){
       console.log("hasher...", e.target.value)
-    this.props.handleUploadChange(e.target.value, true);
+    this.props.handleUploadChange(e.target.value, this.type, true);
   }
 
 render() {
   
-   
+   //TODO set input to value
     return (
         <div>
             <span>Enter your own hash</span>

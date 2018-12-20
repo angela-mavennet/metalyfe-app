@@ -18,18 +18,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       current: 0,
+
     };
   }
 
-  updateHash(hash) {
-    this.setState({ hash: hash });
-  }
-
-  handleCommentChange(comment) {
-    this.setState({ comment: comment });
-    console.log("comment changed to", comment)
-  }
-
+//step component related
   next() {
     const current = this.state.current + 1;
     this.setState({ current });
@@ -46,35 +39,74 @@ class App extends React.Component {
   
   }
 
+  //form related
+  updateHash(hash) {
+    this.setState({ hash: hash });
+  }
 
+  handleCommentChange(comment) {
+    this.setState({ comment: comment });
+  }
+
+  updateUpload(type, data){
+    const upload = {
+      type: type,
+      data: data
+    }
+    this.setState({
+      upload: upload
+    });
+  }
 
   render() {
     const { current } = this.state;
     const Step = Steps.Step;
+   
     const steps = [{
       title: 'Upload',
       content: <Uploader
         updateHash={this.updateHash.bind(this)}
         hash={this.state.hash}
         handleCommentChange={this.handleCommentChange.bind(this)}
+        updateUpload={this.updateUpload.bind(this)}
+        next={this.next.bind(this)}
+        prev={this.prev.bind(this)}
+        current={this.state.current} // required
+        stepsLength={3} // required
+        upload={this.state.upload}
       ></Uploader>,
     }, {
       title: 'Submit',
-      content: <WrappedTimestampForm hash={this.state.hash}></WrappedTimestampForm>,
+      content: <WrappedTimestampForm 
+        hash={this.state.hash}
+        comment={this.state.comment}
+        next={this.next.bind(this)}
+        prev={this.prev.bind(this)}
+        current={this.state.current} // required
+        stepsLength={3} // required
+       
+        ></WrappedTimestampForm>,
     }, {
       title: 'Done',
-      content: <Confirmation hash={this.state.hash}></Confirmation>,
+      content: <Confirmation 
+      hash={this.state.hash}
+      next={this.next.bind(this)}
+      prev={this.prev.bind(this)}
+      current={this.state.current} // required
+      stepsLength={3} // required
+      ></Confirmation>,
     }];
 
     return (
       <div class={"body"}>
-        <h1>Try Mavenstamp</h1>
-        <p>some info</p>
         <Steps current={current}>
-          {steps.map(item => <Step key={item.title} title={item.title} />)}
+          {steps.map(item => <Step 
+          key={item.title} 
+          title={item.title}
+          />)}
         </Steps>
         <div className="steps-content">{steps[current].content}</div>
-        <div className="steps-action">
+        {/* <div className="steps-action">
           {
             current < steps.length - 1
             && <Button type="primary" onClick={() => this.next()}>Next</Button>
@@ -91,7 +123,7 @@ class App extends React.Component {
             </Button>
             )
           }
-        </div>
+        </div> */}
       </div>
     );
   }
