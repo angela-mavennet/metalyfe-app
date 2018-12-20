@@ -39,16 +39,7 @@ handleSubmit = (e) => {
 render() {
     const FormItem = Form.Item;
     const { TextArea } = Input;
-    const formItemLayout = {
-        labelCol: {
-            xs: { span: 24 },
-            sm: { span: 8 },
-        },
-        wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 16 },
-        },
-    };
+  
 
     function hasErrors(fieldsError) {
         return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -60,7 +51,7 @@ render() {
     return (
         <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem
-            {...formItemLayout}
+           
                 label="enter text"
             >
                 {getFieldDecorator('text', {

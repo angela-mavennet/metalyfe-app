@@ -65,7 +65,7 @@ class Uploader extends Component {
                     </div>
 
                     <div class="content">
-                        <p> comments (optional) </p>
+                        <p> Description </p>
                         <TextArea rows={4} onChange={this.handleCommentChange.bind(this)} />
                     </div>
                 </div>

@@ -97,16 +97,7 @@ onNotificationChange(e) {
 render() {
     const FormItem = Form.Item;
     const RadioGroup = Radio.Group;
-    const formItemLayout = {
-        labelCol: {
-            xs: { span: 24 },
-            sm: { span: 8 },
-        },
-        wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 16 },
-        },
-    };
+
     //TODO how to generate certificate URL
 
     function hasErrors(fieldsError) {
@@ -119,7 +110,7 @@ render() {
     return (
         <Form layout="inline" onSubmit={this.handleSubmit}>
             <FormItem
-          {...formItemLayout}
+         
           label="Notification"
         >
           {getFieldDecorator('notification', {
@@ -132,7 +123,7 @@ render() {
           )}
         </FormItem>
             {this.props.form.getFieldValue("notification")=="email" && <FormItem
-                {...formItemLayout}
+              
                 label="E-mail"
             >
                 {getFieldDecorator('email', {
@@ -147,13 +138,7 @@ render() {
             </FormItem>}
          
             <FormItem>
-                {/* <Button
-                    type="primary"
-                    htmlType="submit"
-                    disabled={hasErrors(getFieldsError())}
-                >
-                    Submit
-            </Button> */}
+              
                 <StepButtons
                  current={this.props.current} // required
                  stepsLength={this.props.stepsLength} // required

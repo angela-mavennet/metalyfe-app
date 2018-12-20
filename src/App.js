@@ -99,6 +99,7 @@ class App extends React.Component {
 
     return (
       <div class={"body"}>
+      <div class={"modal"}>
         <Steps current={current}>
           {steps.map(item => <Step 
           key={item.title} 
@@ -124,6 +125,7 @@ class App extends React.Component {
             )
           }
         </div> */}
+        </div>
       </div>
     );
   }
