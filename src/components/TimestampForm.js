@@ -27,52 +27,7 @@ class TimestampForm extends Component {
         };
     }
 
-     getmefingerprint2 = async () => {
-        const secure = await (new Promise(resolve => {
-          Fingerprint2.get((result, components) => { 
-              let stringResponse = ""
-              result.forEach(item => {
-                  console.log(JSON.stringify(item))
-                  stringResponse = stringResponse + JSON.stringify(item)
-              })
-              resolve(stringResponse) 
-            })
-        }))
-        // do things with secure, whatever you return is thenable
-        return secure
-      }
-
-submit(postData, email) {
-    console.log("in submit")
-    
-    if (!checkUserCount(email, this.state.hashArray, this.state.MAX_COUNT)) {
-        alert("sorry you used up all your credits");
-        return;
-    }
-    const apiKey = this.state.ACCESS_KEY;
-
-    const saltedFingerprint = sha256(apiKey + email + this.state.fingerprint);
-    console.log(saltedFingerprint)
-    var headers = {
-        'Content-Type': 'application/json',
-        'AccessKey': apiKey,
-        'Fingerprint': saltedFingerprint
-    }
-    console.log("fingerprint",sha256(apiKey + email + this.state.fingerprint))
-    axios({
-        url: "http://api.mavenstamp.com/v1/timestamp/create",
-        method: 'post',
-        data: postData,
-        headers: headers
-    })
-    .then(response => {
-        console.log(response)
-        this.props.next();
-        
-    })
-    .catch(error => console.log(error));
-        
-}
+   
 
 
 componentDidMount() {
@@ -90,39 +45,86 @@ componentDidMount() {
           console.log(err)
       })
 }
+getmefingerprint2 = async () => {
+    const secure = await (new Promise(resolve => {
+      Fingerprint2.get((result, components) => { 
+          let stringResponse = ""
+          result.forEach(item => {
+              console.log(JSON.stringify(item))
+              stringResponse = stringResponse + JSON.stringify(item)
+          })
+          resolve(stringResponse) 
+        })
+    }))
+    // do things with secure, whatever you return is thenable
+    return secure
+  }
+
+submit(postData, email) {
+console.log("in submit")
+
+if (!checkUserCount(email, this.state.hashArray, this.state.MAX_COUNT)) {
+    alert("sorry you used up all your credits");
+    return;
+}
+const apiKey = this.state.ACCESS_KEY;
+
+const saltedFingerprint = sha256(apiKey + email + this.state.fingerprint);
+console.log(saltedFingerprint)
+var headers = {
+    'Content-Type': 'application/json',
+    'AccessKey': apiKey,
+    'Fingerprint': saltedFingerprint
+}
+console.log("fingerprint",sha256(apiKey + email + this.state.fingerprint))
+axios({
+    url: "http://api.mavenstamp.com/v1/timestamp/create",
+    method: 'post',
+    data: postData,
+    headers: headers
+})
+.then(response => {
+    console.log(response)
+    this.props.next();
+    
+})
+.catch(error => console.log(error));
+    
+}
 
 handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
      
         if (!err) {
-            console.log("notifications", values.email)
+            
+            const email = values.email || "";
+            if (!values.email) {
+                console.log("no email")
+            }
             const postData = {
                 "comment": this.props.comment,
                 "notifications": [
                     {
                         "currency": 0,
                         "notification_type": 0,
-                        "target": values.email
+                        "target": email
                     }
                 ],
                 "hash": this.props.hash
             }
-            this.submit(postData, values.email);
+            this.submit(postData, email);
         }
     });
 
 }
 
 onNotificationChange(e) {
-        console.log('radio checked', e.target.value);
-      
-        // handleSelectChange = (value) => {
-        //     console.log(value);
-            this.props.form.setFieldsValue({
-              notification: e.target.value,
-            });
-        //   }
+    console.log('radio checked', e.target.value);
+    
+    this.props.form.setFieldsValue({
+        notification: e.target.value,
+    });
 }
 
 
@@ -196,7 +198,7 @@ render() {
                  htmlType={"submit"}
                  disabled={hasErrors(getFieldsError())}
                  ></StepButtons> */}
-                 <div classNames="steps-action">
+                 <div class={"steps-action"}>
         {
           this.props.current < this.props.stepsLength - 1
           && <Button 

@@ -300,3 +300,7 @@
   .ant-radio-checked:after {
     border: 1px solid #722575;
   }
+
+   p {
+    margin: 1rem;
+  }

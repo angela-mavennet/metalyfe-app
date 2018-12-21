@@ -4,6 +4,7 @@ import config from '../config';
 import { Button } from 'antd';
 import axios from 'axios';
 import StepButtons from './StepButtons';
+// import { Countdown } from "neal-react";
 
 
 class Confirmation extends React.Component {
@@ -45,15 +46,17 @@ getpdf() {
   }
  
    render() {
-       const batchTime = config.batch_time;
+      //  const batchTime = config.batch_time;
       //  const now = new DateTime(); TODO
       //  const timeToNotification = now - 12312132;
     return (
      <div class={"confirmation"}>
-       <p>{`All transactions are saved at ${batchTime}`}</p>
+       <p>{`All transactions are saved at 6:00pm EST`}</p>
          {`You will receive a notification for your submission in x hours and y minutes`}
       <p>{"Your certificiate of proof is available for download"}</p>
-         
+         {/* <Countdown
+         date={"6pm"}
+         ></Countdown> */}
          <Button type="primary" 
          icon="download" 
          onClick={this.getpdf.bind(this)}
