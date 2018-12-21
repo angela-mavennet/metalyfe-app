@@ -14,6 +14,8 @@ import Fingerprint2 from 'fingerprintjs2';
 import sha256 from 'sha256';
 import Recaptcha from 'react-recaptcha';
 
+//import Moment from 'react-moment';
+
 
 
 
@@ -45,6 +47,9 @@ componentDidMount() {
           console.log(err)
       })
 }
+
+
+
 getmefingerprint2 = async () => {
     const secure = await (new Promise(resolve => {
       Fingerprint2.get((result, components) => { 
@@ -181,11 +186,11 @@ render() {
                 )}
             </FormItem>}
             <FormItem>
-                        <Recaptcha
+                        {/* <Recaptcha
                     sitekey="6Lf1C4QUAAAAAKKzzNLmDsetPM8ZqMnTbvdZlEub"
                     render="explicit"
                     onloadCallback={callback}
-                />
+                /> */}
             </FormItem>
             <FormItem>
               
