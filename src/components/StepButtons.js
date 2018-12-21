@@ -18,7 +18,7 @@ class StepButtons extends React.Component {
   */
    render() {
     return (
-        <div className="steps-action">
+        <div classNames="steps-action">
         {
           this.props.current < this.props.stepsLength - 1
           && <Button 

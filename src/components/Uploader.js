@@ -38,8 +38,8 @@ class Uploader extends Component {
         const TabPane = Tabs.TabPane
         const { TextArea } = Input;
         return (
-            <div class="uploader">
-                <div class="form">
+            <div className="uploader">
+                <div className="form">
                     <div className="card-container">
                         <Tabs type="card" defaultActiveKey="1" onChange={this.callback} >
                             <TabPane tab={<span><Icon type="upload" />Upload</span>} key="1">
@@ -64,7 +64,7 @@ class Uploader extends Component {
                         </Tabs>
                     </div>
 
-                    <div class="content">
+                    <div class={"content"}>
                         <p> Description </p>
                         <TextArea rows={4} onChange={this.handleCommentChange.bind(this)} />
                     </div>

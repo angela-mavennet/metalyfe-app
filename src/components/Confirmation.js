@@ -49,7 +49,7 @@ getpdf() {
       //  const now = new DateTime(); TODO
       //  const timeToNotification = now - 12312132;
     return (
-     <div>
+     <div class={"confirmation"}>
        <p>{`All transactions are saved at ${batchTime}`}</p>
          {`You will receive a notification for your submission in x hours and y minutes`}
       <p>{"Your certificiate of proof is available for download"}</p>

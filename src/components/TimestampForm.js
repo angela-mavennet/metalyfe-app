@@ -10,6 +10,12 @@ import {
 } from 'antd';
 import { checkUserCount, createHashCount } from '../util';
 import StepButtons from './StepButtons';
+import Fingerprint2 from 'fingerprintjs2';
+import sha256 from 'sha256';
+import Recaptcha from 'react-recaptcha';
+
+
+
 
 class TimestampForm extends Component {
     
@@ -21,18 +27,38 @@ class TimestampForm extends Component {
         };
     }
 
+     getmefingerprint2 = async () => {
+        const secure = await (new Promise(resolve => {
+          Fingerprint2.get((result, components) => { 
+              let stringResponse = ""
+              result.forEach(item => {
+                  console.log(JSON.stringify(item))
+                  stringResponse = stringResponse + JSON.stringify(item)
+              })
+              resolve(stringResponse) 
+            })
+        }))
+        // do things with secure, whatever you return is thenable
+        return secure
+      }
+
 submit(postData, email) {
     console.log("in submit")
-    this.props.next();
+    
     if (!checkUserCount(email, this.state.hashArray, this.state.MAX_COUNT)) {
         alert("sorry you used up all your credits");
         return;
     }
     const apiKey = this.state.ACCESS_KEY;
+
+    const saltedFingerprint = sha256(apiKey + email + this.state.fingerprint);
+    console.log(saltedFingerprint)
     var headers = {
         'Content-Type': 'application/json',
-        'AccessKey': apiKey
+        'AccessKey': apiKey,
+        'Fingerprint': saltedFingerprint
     }
+    console.log("fingerprint",sha256(apiKey + email + this.state.fingerprint))
     axios({
         url: "http://api.mavenstamp.com/v1/timestamp/create",
         method: 'post',
@@ -41,6 +67,7 @@ submit(postData, email) {
     })
     .then(response => {
         console.log(response)
+        this.props.next();
         
     })
     .catch(error => console.log(error));
@@ -51,11 +78,17 @@ submit(postData, email) {
 componentDidMount() {
     const hashArray = createHashCount(this.state.MAX_COUNT)//TODO move to parent if re-rendering
     this.setState({ hashArray: hashArray });
-    // console.log("form", this.props.form)
-    // console.log(this.props.form.getFieldValue("notification"))
     this.props.form.setFieldsValue({
         notification: "email",
       });
+
+      this.getmefingerprint2()
+      .then(res => {
+          this.setState({fingerprint: sha256(res)})
+      })
+      .catch(err => {
+          console.log(err)
+      })
 }
 
 handleSubmit = (e) => {
@@ -110,21 +143,27 @@ render() {
         labelCol: { span: 8 },
         wrapperCol: { span: 8 },
       };
+      var callback = function () {
+        console.log('Done!!!!');
+      };
+      
     return (
-        <Form layout="inline" onSubmit={this.handleSubmit}>
+        <Form class={"timestamp-form"} layout={"inline"} onSubmit={this.handleSubmit}>
+       
             <FormItem
-          {...formItemLayout}
-          label="Notification"
-        >
-          {getFieldDecorator('notification', {
-              rules: [{ required: true, message: 'Please select a notification option' }]
-          })(
-            <RadioGroup  onChange={this.onNotificationChange.bind(this)}>
-             <Radio value="email">Notify me by email</Radio>
-              <Radio value="anonymous">Do not notify me/Anonymous</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
+                    {...formItemLayout}
+                    label="Notification"
+                    >
+                    {getFieldDecorator('notification', {
+                        rules: [{ required: true, message: 'Please select a notification option' }]
+                    })(
+                        <RadioGroup  onChange={this.onNotificationChange.bind(this)}>
+                        <Radio value="email">Notify me by email</Radio>
+                        <Radio value="anonymous">Do not notify me/Anonymous</Radio>
+                        </RadioGroup>
+                    )}
+             </FormItem>
+         
             {this.props.form.getFieldValue("notification")=="email" && <FormItem
              
                 label="E-mail"
@@ -139,10 +178,16 @@ render() {
                     <Input />
                 )}
             </FormItem>}
-         
+            <FormItem>
+                        <Recaptcha
+                    sitekey="6Lf1C4QUAAAAAKKzzNLmDsetPM8ZqMnTbvdZlEub"
+                    render="explicit"
+                    onloadCallback={callback}
+                />
+            </FormItem>
             <FormItem>
               
-                <StepButtons
+                {/* <StepButtons
                  current={this.props.current} // required
                  stepsLength={this.props.stepsLength} // required
                  next={this.props.next} // required
@@ -150,7 +195,36 @@ render() {
                  nextText={"Submit"}
                  htmlType={"submit"}
                  disabled={hasErrors(getFieldsError())}
-                 ></StepButtons>
+                 ></StepButtons> */}
+                 <div classNames="steps-action">
+        {
+          this.props.current < this.props.stepsLength - 1
+          && <Button 
+          type="primary" 
+          htmlType={"submit"} 
+          disabled={hasErrors(getFieldsError())}
+        //   onClick={() => this.props.next()}
+        //TODO buttons don't connect to form if imported as component
+          >
+            {this.props.nextText || "Next"}
+          </Button>
+        }
+        {
+          this.props.current === this.props.stepsLength - 1
+          && <Button type="primary" >Done</Button>
+        }
+        {
+          this.props.current > 0
+          && (
+            <Button 
+            type="button"
+            style={{ marginLeft: 8 }} 
+            onClick={() => this.props.prev()}>
+              Previous
+          </Button>
+          )
+        }
+      </div>
 
             </FormItem>
         </Form>
